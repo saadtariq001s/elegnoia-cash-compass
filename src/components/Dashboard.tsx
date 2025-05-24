@@ -1,6 +1,5 @@
-
 import { Transaction } from '../types/transaction';
-import { DollarSign, TrendingUp, TrendingDown, Target } from 'lucide-react';
+import { DollarSign, TrendingUp, TrendingDown, Target, BarChart3 } from 'lucide-react';
 
 interface DashboardProps {
   transactions: Transaction[];
