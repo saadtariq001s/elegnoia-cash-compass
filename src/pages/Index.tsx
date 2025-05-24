@@ -16,25 +16,51 @@ const Index = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      <div className="container mx-auto px-4 py-6">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-10 h-10 bg-gradient-to-r from-red-400 to-purple-500 rounded-lg flex items-center justify-center">
-              <span className="text-white font-bold text-lg">A</span>
+    <div className="min-h-screen bg-gray-50">
+      {/* Professional Header */}
+      <header className="bg-white border-b border-gray-200 shadow-sm">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            {/* Logo and Branding */}
+            <div className="flex items-center gap-4">
+              <img 
+                src="/lovable-uploads/0c6c2d90-c3a9-4be6-8af3-b4d946284cc1.png" 
+                alt="Elegnoia" 
+                className="h-10 w-auto"
+              />
+              <div className="border-l border-gray-300 pl-4">
+                <h1 className="text-2xl font-bold text-gray-900">
+                  AgenticAccounting
+                </h1>
+                <p className="text-sm text-gray-600">Financial Management Suite</p>
+              </div>
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-red-500 via-purple-600 to-slate-700 bg-clip-text text-transparent">
-              AgenticAccounting
-            </h1>
+            
+            {/* Quick Stats */}
+            <div className="flex items-center gap-6">
+              <div className="text-right">
+                <p className="text-sm text-gray-600">Total Transactions</p>
+                <p className="text-xl font-semibold text-gray-900">{transactions.length}</p>
+              </div>
+              <div className="text-right">
+                <p className="text-sm text-gray-600">Net Balance</p>
+                <p className="text-xl font-semibold text-green-600">
+                  ${(transactions
+                    .reduce((sum, t) => sum + (t.type === 'income' ? t.amount : -t.amount), 0)
+                    .toLocaleString())}
+                </p>
+              </div>
+            </div>
           </div>
-          <p className="text-slate-600">Intelligent cash flow management for Elegnoia</p>
         </div>
+      </header>
 
+      {/* Main Content */}
+      <div className="container mx-auto px-6 py-8">
         {/* Navigation */}
         <Navigation activeTab={activeTab} onTabChange={setActiveTab} />
 
-        {/* Content */}
+        {/* Content Area */}
         <div className="mt-8">
           {activeTab === 'dashboard' && <Dashboard transactions={transactions} />}
           {activeTab === 'add-transaction' && (
