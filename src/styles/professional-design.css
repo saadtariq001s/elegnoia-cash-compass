@@ -1,0 +1,485 @@
+/* src/styles/professional-design.css - Professional Design System */
+
+/* Professional Color Palette for Financial Applications */
+:root {
+  /* Primary Brand Colors */
+  --primary-900: #1e3a8a; /* Deep Professional Blue */
+  --primary-800: #1d4ed8; /* Rich Blue */
+  --primary-700: #2563eb; /* Main Blue */
+  --primary-600: #3b82f6; /* Bright Blue */
+  --primary-500: #60a5fa; /* Light Blue */
+  --primary-400: #93c5fd; /* Very Light Blue */
+  --primary-300: #bfdbfe; /* Pale Blue */
+  --primary-200: #dbeafe; /* Very Pale Blue */
+  --primary-100: #eff6ff; /* Almost White Blue */
+
+  /* Professional Grays */
+  --gray-900: #111827; /* Almost Black */
+  --gray-800: #1f2937; /* Dark Gray */
+  --gray-700: #374151; /* Medium Dark Gray */
+  --gray-600: #4b5563; /* Medium Gray */
+  --gray-500: #6b7280; /* Gray */
+  --gray-400: #9ca3af; /* Light Gray */
+  --gray-300: #d1d5db; /* Very Light Gray */
+  --gray-200: #e5e7eb; /* Almost White Gray */
+  --gray-100: #f3f4f6; /* Very Light Background */
+  --gray-50: #f9fafb;  /* White Background */
+
+  /* Financial Success Colors */
+  --success-900: #14532d; /* Dark Green */
+  --success-800: #166534; /* Deep Green */
+  --success-700: #15803d; /* Rich Green */
+  --success-600: #16a34a; /* Green */
+  --success-500: #22c55e; /* Bright Green */
+  --success-400: #4ade80; /* Light Green */
+  --success-300: #86efac; /* Very Light Green */
+  --success-200: #bbf7d0; /* Pale Green */
+  --success-100: #dcfce7; /* Almost White Green */
+
+  /* Financial Warning/Alert Colors */
+  --warning-900: #92400e; /* Dark Amber */
+  --warning-800: #b45309; /* Deep Amber */
+  --warning-700: #d97706; /* Rich Amber */
+  --warning-600: #f59e0b; /* Amber */
+  --warning-500: #fbbf24; /* Bright Amber */
+  --warning-400: #fcd34d; /* Light Amber */
+  --warning-300: #fde68a; /* Very Light Amber */
+  --warning-200: #fef3c7; /* Pale Amber */
+  --warning-100: #fffbeb; /* Almost White Amber */
+
+  /* Financial Danger/Loss Colors */
+  --danger-900: #7f1d1d; /* Dark Red */
+  --danger-800: #991b1b; /* Deep Red */
+  --danger-700: #b91c1c; /* Rich Red */
+  --danger-600: #dc2626; /* Red */
+  --danger-500: #ef4444; /* Bright Red */
+  --danger-400: #f87171; /* Light Red */
+  --danger-300: #fca5a5; /* Very Light Red */
+  --danger-200: #fecaca; /* Pale Red */
+  --danger-100: #fef2f2; /* Almost White Red */
+
+  /* Professional Shadows */
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+
+  /* Professional Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--primary-600) 0%, var(--primary-800) 100%);
+  --gradient-success: linear-gradient(135deg, var(--success-500) 0%, var(--success-700) 100%);
+  --gradient-warning: linear-gradient(135deg, var(--warning-500) 0%, var(--warning-700) 100%);
+  --gradient-danger: linear-gradient(135deg, var(--danger-500) 0%, var(--danger-700) 100%);
+  --gradient-subtle: linear-gradient(135deg, var(--gray-50) 0%, var(--gray-100) 100%);
+
+  /* Typography */
+  --font-display: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-body: 'Inter', 'SF Pro Text', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Roboto Mono', monospace;
+
+  /* Spacing Scale */
+  --space-px: 1px;
+  --space-0: 0px;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+
+  /* Border Radius */
+  --radius-sm: 0.125rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+  --radius-full: 9999px;
+}
+
+/* Professional Base Styles */
+.professional-app {
+  font-family: var(--font-body);
+  background-color: var(--gray-50);
+  color: var(--gray-800);
+  line-height: 1.6;
+}
+
+/* Professional Card Component */
+.professional-card {
+  background: white;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+  transition: all 0.2s ease-in-out;
+}
+
+.professional-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.professional-card-elevated {
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--gray-100);
+}
+
+/* Professional Buttons */
+.btn-primary {
+  background: var(--gradient-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-6);
+  font-weight: 600;
+  font-size: 0.875rem;
+  letter-spacing: 0.025em;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+  filter: brightness(1.05);
+}
+
+.btn-secondary {
+  background: white;
+  color: var(--gray-700);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-6);
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-secondary:hover {
+  background: var(--gray-50);
+  border-color: var(--gray-400);
+  transform: translateY(-1px);
+}
+
+.btn-success {
+  background: var(--gradient-success);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-6);
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-success:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+.btn-danger {
+  background: var(--gradient-danger);
+  color: white;
+  border: none;
+  border-radius: var(--radius-lg);
+  padding: var(--space-3) var(--space-6);
+  font-weight: 600;
+  font-size: 0.875rem;
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+}
+
+.btn-danger:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Professional Form Elements */
+.professional-input {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-lg);
+  font-size: 0.875rem;
+  background: white;
+  transition: all 0.2s ease-in-out;
+  font-family: var(--font-body);
+}
+
+.professional-input:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+}
+
+.professional-select {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-lg);
+  font-size: 0.875rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.professional-select:focus {
+  outline: none;
+  border-color: var(--primary-500);
+  box-shadow: 0 0 0 3px rgb(59 130 246 / 0.1);
+}
+
+/* Professional Status Indicators */
+.status-success {
+  background: var(--success-100);
+  color: var(--success-800);
+  border: 1px solid var(--success-200);
+}
+
+.status-warning {
+  background: var(--warning-100);
+  color: var(--warning-800);
+  border: 1px solid var(--warning-200);
+}
+
+.status-danger {
+  background: var(--danger-100);
+  color: var(--danger-800);
+  border: 1px solid var(--danger-200);
+}
+
+.status-info {
+  background: var(--primary-100);
+  color: var(--primary-800);
+  border: 1px solid var(--primary-200);
+}
+
+/* Professional Typography */
+.text-display-xl {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+  color: var(--gray-900);
+}
+
+.text-display-lg {
+  font-family: var(--font-display);
+  font-size: 1.875rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+  color: var(--gray-900);
+}
+
+.text-heading-xl {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--gray-900);
+}
+
+.text-heading-lg {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--gray-900);
+}
+
+.text-body-lg {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--gray-700);
+}
+
+.text-body {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--gray-600);
+}
+
+.text-caption {
+  font-size: 0.75rem;
+  line-height: 1.5;
+  color: var(--gray-500);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Professional Metric Cards */
+.metric-card {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+  position: relative;
+  overflow: hidden;
+}
+
+.metric-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--gradient-primary);
+}
+
+.metric-card-success::before {
+  background: var(--gradient-success);
+}
+
+.metric-card-warning::before {
+  background: var(--gradient-warning);
+}
+
+.metric-card-danger::before {
+  background: var(--gradient-danger);
+}
+
+/* Professional Navigation */
+.professional-nav {
+  background: white;
+  border-radius: var(--radius-xl);
+  padding: var(--space-2);
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--gray-200);
+}
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  font-weight: 500;
+  font-size: 0.875rem;
+  color: var(--gray-600);
+  transition: all 0.2s ease-in-out;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+  background: none;
+}
+
+.nav-item:hover {
+  background: var(--gray-100);
+  color: var(--gray-800);
+}
+
+.nav-item.active {
+  background: var(--gradient-primary);
+  color: white;
+  box-shadow: var(--shadow-md);
+}
+
+/* Professional Tables */
+.professional-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.professional-table th {
+  background: var(--gray-50);
+  padding: var(--space-4);
+  text-align: left;
+  font-weight: 600;
+  color: var(--gray-700);
+  border-bottom: 1px solid var(--gray-200);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.professional-table td {
+  padding: var(--space-4);
+  border-bottom: 1px solid var(--gray-100);
+  color: var(--gray-700);
+}
+
+.professional-table tr:hover {
+  background: var(--gray-50);
+}
+
+/* Professional Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .text-display-xl {
+    font-size: 1.875rem;
+  }
+  
+  .text-display-lg {
+    font-size: 1.5rem;
+  }
+  
+  .metric-card {
+    padding: var(--space-4);
+  }
+  
+  .professional-nav {
+    padding: var(--space-1);
+  }
+  
+  .nav-item {
+    padding: var(--space-2) var(--space-3);
+    font-size: 0.75rem;
+  }
+}
