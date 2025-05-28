@@ -1,5 +1,5 @@
-
-import { BarChart3, Plus, List, Brain } from 'lucide-react';
+// src/components/Navigation.tsx - Updated with Analytics
+import { BarChart3, Plus, List, Brain, TrendingUp } from 'lucide-react';
 
 interface NavigationProps {
   activeTab: string;
@@ -11,6 +11,7 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
     { id: 'dashboard', label: 'Dashboard', icon: BarChart3 },
     { id: 'add-transaction', label: 'Add Transaction', icon: Plus },
     { id: 'transactions', label: 'All Transactions', icon: List },
+    { id: 'charts', label: 'Analytics', icon: TrendingUp },
     { id: 'insights', label: 'AI Insights', icon: Brain },
   ];
 
@@ -28,7 +29,7 @@ export const Navigation = ({ activeTab, onTabChange }: NavigationProps) => {
               className={`
                 flex items-center gap-3 px-6 py-3 rounded-md font-medium transition-all duration-200 text-sm
                 ${isActive 
-                  ? 'bg-blue-600 text-white shadow-md' 
+                  ? 'bg-gradient-to-r from-red-500 to-purple-600 text-white shadow-md' 
                   : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
                 }
               `}
