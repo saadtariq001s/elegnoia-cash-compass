@@ -1,4 +1,4 @@
-// src/contexts/AuthContext.tsx - Fixed with proper session management
+// src/contexts/AuthContext.tsx - Fixed Authentication Flow
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, AuthState, LoginCredentials, SignupData } from '../types/auth';
 import { 
@@ -36,16 +36,28 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [authState, setAuthState] = useState<AuthState>({
     user: null,
     isAuthenticated: false,
-    isLoading: true,
+    isLoading: true, // Always start with loading true
   });
 
-  // Initialize and validate data on component mount
+  // Initialize authentication on component mount
   useEffect(() => {
     const initializeAuth = async () => {
       try {
-        console.log('[AuthProvider] Initializing authentication...');
+        console.log('[AuthProvider] Starting authentication initialization...');
+        
+        // Ensure loading state is true during initialization
+        setAuthState(prev => ({
+          ...prev,
+          isLoading: true,
+          isAuthenticated: false,
+          user: null
+        }));
+
+        // Small delay to ensure UI shows loading state
+        await new Promise(resolve => setTimeout(resolve, 500));
         
         // Initialize users database
+        console.log('[AuthProvider] Initializing users database...');
         initializeUsers();
         
         // Validate data integrity
@@ -55,14 +67,30 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
         
         // Try to restore session
+        console.log('[AuthProvider] Checking for existing session...');
         const storedUser = loadCurrentUserSession();
+        
         if (storedUser) {
-          console.log('[AuthProvider] Restoring session for user:', storedUser.username);
-          setAuthState({
-            user: storedUser,
-            isAuthenticated: true,
-            isLoading: false,
-          });
+          // Verify the stored user still exists in the database
+          const users = require('../utils/csvUtils').loadUsers();
+          const validUser = users.find((u: User) => u.id === storedUser.id && u.username === storedUser.username);
+          
+          if (validUser) {
+            console.log('[AuthProvider] Valid session found, restoring user:', storedUser.username);
+            setAuthState({
+              user: storedUser,
+              isAuthenticated: true,
+              isLoading: false,
+            });
+          } else {
+            console.log('[AuthProvider] Stored session is invalid, clearing...');
+            clearCurrentUserSession();
+            setAuthState({
+              user: null,
+              isAuthenticated: false,
+              isLoading: false,
+            });
+          }
         } else {
           console.log('[AuthProvider] No existing session found');
           setAuthState({
@@ -73,6 +101,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         }
       } catch (error) {
         console.error('[AuthProvider] Initialization error:', error);
+        // On error, clear everything and show auth
+        clearCurrentUserSession();
         setAuthState({
           user: null,
           isAuthenticated: false,
@@ -88,7 +118,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       console.log('[AuthProvider] Attempting login for:', credentials.username);
       
+      // Set loading during login
+      setAuthState(prev => ({ ...prev, isLoading: true }));
+      
       if (!credentials.username || !credentials.password) {
+        setAuthState(prev => ({ ...prev, isLoading: false }));
         return { success: false, error: 'Username and password are required' };
       }
 
@@ -98,6 +132,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         // Save session
         if (!saveCurrentUserSession(user)) {
           console.error('[AuthProvider] Failed to save user session');
+          setAuthState(prev => ({ ...prev, isLoading: false }));
           return { success: false, error: 'Failed to save session' };
         }
 
@@ -111,10 +146,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         return { success: true };
       } else {
         console.log('[AuthProvider] Login failed - invalid credentials');
+        setAuthState(prev => ({ ...prev, isLoading: false }));
         return { success: false, error: 'Invalid username or password' };
       }
     } catch (error) {
       console.error('[AuthProvider] Login error:', error);
+      setAuthState(prev => ({ ...prev, isLoading: false }));
       return { success: false, error: 'An error occurred during login' };
     }
   };
@@ -123,20 +160,27 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       console.log('[AuthProvider] Attempting signup for:', data.username);
 
+      // Set loading during signup
+      setAuthState(prev => ({ ...prev, isLoading: true }));
+
       // Validation
       if (!data.username || !data.password || !data.confirmPassword) {
+        setAuthState(prev => ({ ...prev, isLoading: false }));
         return { success: false, error: 'All fields are required' };
       }
 
       if (data.password !== data.confirmPassword) {
+        setAuthState(prev => ({ ...prev, isLoading: false }));
         return { success: false, error: 'Passwords do not match' };
       }
 
       if (data.password.length < 6) {
+        setAuthState(prev => ({ ...prev, isLoading: false }));
         return { success: false, error: 'Password must be at least 6 characters long' };
       }
 
       if (data.username.length < 3) {
+        setAuthState(prev => ({ ...prev, isLoading: false }));
         return { success: false, error: 'Username must be at least 3 characters long' };
       }
 
@@ -148,12 +192,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       });
 
       if (!newUser) {
+        setAuthState(prev => ({ ...prev, isLoading: false }));
         return { success: false, error: 'Username already exists or signup failed' };
       }
 
       // Save session for new user
       if (!saveCurrentUserSession(newUser)) {
         console.error('[AuthProvider] Failed to save new user session');
+        setAuthState(prev => ({ ...prev, isLoading: false }));
         return { success: false, error: 'Account created but failed to login' };
       }
 
@@ -167,6 +213,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       return { success: true };
     } catch (error) {
       console.error('[AuthProvider] Signup error:', error);
+      setAuthState(prev => ({ ...prev, isLoading: false }));
       return { success: false, error: 'An error occurred during signup' };
     }
   };
@@ -175,32 +222,59 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       console.log('[AuthProvider] Logging out user:', authState.user?.username);
       
+      // Set loading during logout
+      setAuthState(prev => ({ ...prev, isLoading: true }));
+      
       clearCurrentUserSession();
       
+      // Small delay to show logout process
+      setTimeout(() => {
+        setAuthState({
+          user: null,
+          isAuthenticated: false,
+          isLoading: false,
+        });
+      }, 300);
+
+      console.log('[AuthProvider] Logout successful');
+    } catch (error) {
+      console.error('[AuthProvider] Logout error:', error);
+      // Force logout even on error
       setAuthState({
         user: null,
         isAuthenticated: false,
         isLoading: false,
       });
-
-      console.log('[AuthProvider] Logout successful');
-    } catch (error) {
-      console.error('[AuthProvider] Logout error:', error);
     }
   };
 
   const refreshSession = () => {
     try {
       console.log('[AuthProvider] Refreshing session...');
+      
       const storedUser = loadCurrentUserSession();
       
       if (storedUser) {
-        setAuthState({
-          user: storedUser,
-          isAuthenticated: true,
-          isLoading: false,
-        });
-        console.log('[AuthProvider] Session refreshed for:', storedUser.username);
+        // Verify user still exists
+        const users = require('../utils/csvUtils').loadUsers();
+        const validUser = users.find((u: User) => u.id === storedUser.id);
+        
+        if (validUser) {
+          setAuthState({
+            user: storedUser,
+            isAuthenticated: true,
+            isLoading: false,
+          });
+          console.log('[AuthProvider] Session refreshed for:', storedUser.username);
+        } else {
+          console.log('[AuthProvider] Session user no longer exists, clearing...');
+          clearCurrentUserSession();
+          setAuthState({
+            user: null,
+            isAuthenticated: false,
+            isLoading: false,
+          });
+        }
       } else {
         setAuthState({
           user: null,
@@ -235,7 +309,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   // Periodic session validation (every 30 seconds)
   useEffect(() => {
     const validateSession = () => {
-      if (authState.isAuthenticated && authState.user) {
+      if (authState.isAuthenticated && authState.user && !authState.isLoading) {
         const storedUser = loadCurrentUserSession();
         if (!storedUser || storedUser.id !== authState.user.id) {
           console.log('[AuthProvider] Session validation failed, logging out');
@@ -246,7 +320,38 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const interval = setInterval(validateSession, 30000); // Check every 30 seconds
     return () => clearInterval(interval);
-  }, [authState.isAuthenticated, authState.user]);
+  }, [authState.isAuthenticated, authState.user, authState.isLoading]);
+
+  // Security: Clear session if window is idle for too long (optional)
+  useEffect(() => {
+    let idleTimer: NodeJS.Timeout;
+    
+    const resetIdleTimer = () => {
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        if (authState.isAuthenticated) {
+          console.log('[AuthProvider] Session expired due to inactivity');
+          logout();
+        }
+      }, 30 * 60 * 1000); // 30 minutes
+    };
+
+    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
+    
+    if (authState.isAuthenticated) {
+      events.forEach(event => {
+        document.addEventListener(event, resetIdleTimer, true);
+      });
+      resetIdleTimer();
+    }
+
+    return () => {
+      clearTimeout(idleTimer);
+      events.forEach(event => {
+        document.removeEventListener(event, resetIdleTimer, true);
+      });
+    };
+  }, [authState.isAuthenticated]);
 
   const value: AuthContextType = {
     ...authState,
